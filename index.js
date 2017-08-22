@@ -247,7 +247,7 @@ class SequelizeDao {
         return new Promise(ok => {
             walker.on("file", async (root, fileStat, next) => {
                 try {
-                    let result = Utils.load(root, fileStat);
+                    let result = SequelizeDao.load(root, fileStat);
                     let model = result.object;
                     if (typeof model === 'function') {
                         let Entity = sequelize.import(result.path);
