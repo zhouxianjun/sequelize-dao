@@ -272,3 +272,4 @@ class SequelizeDao {
     }
 }
 module.exports = SequelizeDao;
+module.exports.Paging = require('Paging');
