@@ -7,7 +7,7 @@ const art = require('art-template');
 const util = require('util');
 const path = require('path');
 const walk = require('walk');
-art.defaults.imports.Utils = {
+const TemplateUtils = {
     join(array, sp = ',', name = 'arr') {
         let result = [];
         array.forEach((item, index) => result.push(`:_${name}_${index}`));
@@ -26,6 +26,7 @@ art.defaults.imports.Utils = {
         return result.join(',');
     }
 };
+art.defaults.imports.Utils = TemplateUtils;
 art.defaults.imports.Model = {};
 const Types = ['SELECT', 'RAW'];
 class SequelizeDao {
@@ -273,3 +274,4 @@ class SequelizeDao {
 }
 module.exports = SequelizeDao;
 module.exports.Paging = require('Paging');
+module.exports.TemplateUtils = TemplateUtils;
