@@ -175,7 +175,7 @@ class SequelizeDao {
 
     async getMapper() {
         if (this.mapper === null) {
-            BasicDao.sleep(500);
+            SequelizeDao.sleep(500);
             return await this.getMapper();
         }
         if (this.mapper === false)
@@ -273,5 +273,5 @@ class SequelizeDao {
     }
 }
 module.exports = SequelizeDao;
-module.exports.Paging = require('Paging');
+module.exports.Paging = require('./Paging');
 module.exports.TemplateUtils = TemplateUtils;

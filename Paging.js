@@ -1,5 +1,10 @@
 'use strict';
 class Paging {
+    constructor(num, size) {
+        this.num = num;
+        this.size = size;
+    }
+
     get total() {
         let total = this.count / this.size;
         if (total === 0 || this.count % this.size !== 0) {
