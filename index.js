@@ -135,6 +135,8 @@ class SequelizeDao {
      */
     async execSql(sql, type, params, model) {
         assert(this.sequelize.QueryTypes[type], `不支持的类型 ${type}`);
+        sql = sql.replace(/\n/g, ' ').replace(/\s+/g," ").replace(/\s+\(/,"(").replace(/\s+\)/,")");
+        logger.log(`exec ${sql}`);
         return await this.sequelize.query(sql, {replacements: params, type, model});
     }
 
@@ -149,7 +151,6 @@ class SequelizeDao {
         let mapper = await this.getMapper();
         assert(mapper[name], `模板没有找到 ${name} 这个方法`);
         let sql = mapper[name].render(params);
-        logger.log(`exec template ${name}: ${sql}`);
         let result = await this.execSql(sql, mapper[name].type, params, model);
         if ((mapper[name].single === true || mapper[name].type === 'RAW') && Array.isArray(result)) {
             return result[0];
@@ -169,7 +170,6 @@ class SequelizeDao {
         assert(mapper[name], `模板没有找到 ${name} 这个方法`);
         assert(mapper[name].type === 'SELECT', `模板 ${name} 不是查询类型`);
         let sql = mapper[name].render(params);
-        logger.log(`exec template page ${name}: ${sql}`);
         return this.selectByPage(sql, paging, params);
     }
 
@@ -198,7 +198,7 @@ class SequelizeDao {
 
             items.forEach(item => this.mapper[item.id] = {
                 type,
-                render: art.compile(item._.replace(/\n/g, ' ')),
+                render: art.compile(item._),
                 single: !!item.single
             });
         });
