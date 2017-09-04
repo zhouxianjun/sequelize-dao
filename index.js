@@ -56,6 +56,12 @@ class SequelizeDao {
      * @returns {Promise.<*>}
      */
     async save(record, fields) {
+        if (Array.isArray(record)) {
+            record.forEach(r => {
+                Reflect.ownKeys(r).forEach(key => {r[key] === null && Reflect.deleteProperty(r, key)});
+            });
+            return await this.Model.bulkCreate(record, {fields});
+        }
         Reflect.ownKeys(record).forEach(key => {record[key] === null && Reflect.deleteProperty(record, key)});
         return await this.Model.create(record, {fields});
     }
