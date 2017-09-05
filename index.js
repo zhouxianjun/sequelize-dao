@@ -277,6 +277,20 @@ class SequelizeDao {
             });
         });
     }
+
+    parseDto(value) {
+        return SequelizeDao.json2dto(this.Model.fieldRawAttributesMap, value);
+    }
+
+    static json2dto(keys, json) {
+        let dto = {};
+        Reflect.ownKeys(json).forEach(key => {
+            if (keys[key]) {
+                dto[(keys[key].fieldName || keys[key])] = json[key];
+            }
+        });
+        return dto;
+    }
 }
 module.exports = SequelizeDao;
 module.exports.Paging = require('./Paging');
